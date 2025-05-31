@@ -1,1 +1,77 @@
-<p>admin works!</p>
+<div class="admin-container">
+  <h1>Admin</h1>
+  
+  <div class="filters-section">
+    <h2>Présence</h2>
+    
+    <div class="filter-controls">
+      <div class="filter-group">
+        <label for="classe">Classe</label>
+        <select id="classe" [(ngModel)]="filters.classe">
+          <option value="">Toutes les classes</option>
+          <option *ngFor="let classe of getUniqueClasses()" [value]="classe">{{classe}}</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="status">Status</label>
+        <select id="status" [(ngModel)]="filters.status">
+          <option value="">Tous les status</option>
+          <option value="Absent(e)">Absent(e)</option>
+          <option value="Retard">Retard</option>
+          <option value="Présent(e)">Présent(e)</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" [(ngModel)]="filters.date">
+      </div>
+      
+      <div class="filter-actions">
+        <button (click)="applyFilters()">Filtrer</button>
+        <button (click)="resetFilters()">Réinitialiser</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Matricule</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Classe</th>
+          <th>Module</th>
+          <th>Date</th>
+          <th>Heure</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let absence of filteredAbsences">
+          <td>{{absence.matricule}}</td>
+          <td>{{absence.nom}}</td>
+          <td>{{absence.prenom}}</td>
+          <td>{{absence.classe}}</td>
+          <td>{{absence.module}}</td>
+          <td>{{absence.date}}</td>
+          <td>{{absence.heure}}</td>
+          <td [class.absent]="absence.status === 'Absent(e)'" 
+              [class.retard]="absence.status === 'Retard'">
+            {{absence.status}}
+          </td>
+          <td>
+            <button (click)="validateJustification(absence.matricule)" 
+                    *ngIf="absence.status !== 'Présent(e)'">
+              {{absence.action}}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
