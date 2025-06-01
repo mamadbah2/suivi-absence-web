@@ -9,7 +9,7 @@
       <div class="ism-admin-info">
         <img class="ism-admin-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin avatar" />
         <div class="ism-admin-text">
-          <span class="ism-admin-name">Prénom Nom</span>
+          <span class="ism-admin-name">{{user_connect.prenom}} {{user_connect.nom}}</span>
           <span class="ism-admin-role">Admin</span>
         </div>
       </div>
@@ -69,7 +69,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let absence of paginatedAbsences">
-        <td>{{ absence.id }}</td>
+        <td>{{ absence.matricule }}</td>
         <td>{{ absence.nom }}</td>
         <td>{{ absence.prenom }}</td>
         <td>{{ absence.classe }}</td>
@@ -83,9 +83,9 @@
           <span *ngIf="!absence.justificatif">-</span>
         </td>
         <td class="ism-action-col">
-          <button class="ism-action-btn" [disabled]="absence.status !== 'Absent'"
+          <button class="ism-action-btn" [disabled]="absence.status !== 'ABSENT'"
             (click)="validerJustification(absence)">Valider Just.</button>
-          <button class="ism-refuser-btn" [disabled]="absence.status !== 'Absent'"
+          <button class="ism-refuser-btn" [disabled]="absence.status !== 'ABSENT'"
             (click)="refuserAbsence(absence)">Refuser</button>
           <button class="ism-detail-btn" (click)="voirDetail(absence)" title="Voir détail"><span
               class="ism-eye-icon">&#128065;</span></button>
@@ -106,7 +106,7 @@
     <button class="ism-modal-close" (click)="closeDetailModal()">&times;</button>
     <h2>Détail de l'absence</h2>
     <ul>
-      <li><b>Matricule :</b> {{ selectedAbsence.id }}</li>
+      <li><b>Matricule :</b> {{ selectedAbsence.matricule }}</li>
       <li><b>Nom :</b> {{ selectedAbsence.nom }}</li>
       <li><b>Prénom :</b> {{ selectedAbsence.prenom }}</li>
       <li><b>Classe :</b> {{ selectedAbsence.classe }}</li>

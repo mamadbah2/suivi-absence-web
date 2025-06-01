@@ -3,6 +3,8 @@ import { AbsenceService } from '../../shared/services/impl/absence.service';
 import { AbsenceModels } from '../../shared/models/absence.models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { User } from '../../shared/models/user.model';
+import { UserModel } from '../../models/user.model';
 
 @Component({
   selector: 'app-admin',
@@ -19,6 +21,7 @@ export class AdminComponent implements OnInit {
   statuts: string[] = ['Présent', 'Absent', 'Justifié'];
   selectedClasse: string = '';
   selectedStatut: string = '';
+  user_connect: any;
 
   // Pagination
   pageSize = 5;
@@ -38,6 +41,8 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     this.loadAbsences();
+    this.user_connect = JSON.parse(localStorage.getItem('USER_CONMECT') || 'null');
+    console.log('Utilisateur connecté:', this.user_connect);
   }
 
   loadAbsences(page: number = 0, size: number = 10) {
@@ -49,6 +54,8 @@ export class AdminComponent implements OnInit {
       this.applyFilters();
     });
   }
+
+
 
   applyFilters() {
     this.filteredAbsences = this.absences.filter(a =>
@@ -89,7 +96,15 @@ export class AdminComponent implements OnInit {
   }
 
   validerJustification(absence: AbsenceModels) {
-    this.showNotification('success', `Justification validée pour ${absence.nom} ${absence.prenom}`);
+    this.absenceService.validateJustification(absence).subscribe({
+      next: () => {
+        this.showNotification('success', `Justification validée pour ${absence.nom} ${absence.prenom}`);
+        this.loadAbsences(); // Recharge les absences après validation
+      },
+      error: () => {
+        this.showNotification('error', `Erreur lors de la validation de la justification pour ${absence.nom} ${absence.prenom}`);
+      }
+    });
   }
 
   refuserAbsence(absence: AbsenceModels) {

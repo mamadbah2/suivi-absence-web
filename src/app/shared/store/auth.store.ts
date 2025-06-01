@@ -1,6 +1,7 @@
 // src/app/shared/store/auth.store.ts
 import { signal } from '@angular/core';
 import { User } from '../models/user.model';
+import { UserModels } from '../models/user.models';
 
 const adminUser: User = {
   username: 'admin',
@@ -27,8 +28,18 @@ export async function login(email: string, password: string): Promise<boolean> {
 
     if (response.ok) {
       const data = await response.json();
+      console.log('Login successful:', data);
+
+     
       localStorage.setItem(JWT_TOKEN_KEY, data.token); // Save the JWT token
-      localStorage.setItem(USER_DATA_KEY, JSON.stringify(data.user)); // Save user data
+      const user: UserModels = {
+        id: "00",
+        nom: data.nom,
+        prenom: data.prenom,
+        email: data.email,
+        role: data.role,
+      };
+      localStorage.setItem('USER_CONMECT', JSON.stringify(user));
       currentUser.set(data.user);
       isAuthenticated.set(true);
       return true;

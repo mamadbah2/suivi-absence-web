@@ -17,9 +17,9 @@ export class AbsenceService {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
-  
+
     const params = { page: page.toString(), size: size.toString() };
-  
+
     return this.http.get<any>(this.apiUrl, { headers, params });
   }
 
@@ -33,6 +33,16 @@ export class AbsenceService {
     return this.getAbsences();
   }
 
+  validateJustification(absence: AbsenceModels): Observable<any> {
+    const token = localStorage.getItem('jwt_token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const url = 'http://localhost:8081/app/absences/validate'; 
+    return this.http.post<any>(url, absence, { headers });
+  }
   envoyerJustification(formData: FormData): Observable<any> {
     // Simule un succès immédiat
     return of({ success: true });
