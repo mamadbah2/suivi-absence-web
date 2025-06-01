@@ -27,8 +27,8 @@ export class SecurityComponent {
     return isAuthenticated();
   }
 
-  onLogin() {
-    const success = login(this.username, this.password);
+  async onLogin() {
+    const success = await login(this.username, this.password);
     this.loginError = !success;
 
     if (success) {

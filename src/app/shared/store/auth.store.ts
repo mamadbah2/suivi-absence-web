@@ -8,18 +8,41 @@ const adminUser: User = {
   role: 'admin',
 };
 
+ const JWT_TOKEN_KEY = 'jwt_token';
+ const USER_DATA_KEY = 'user_data';
+ const apiBaseUrl = 'http://localhost:8081/app';
+
 export const isAuthenticated = signal(false);
 export const currentUser = signal<User | null>(null);
 
-export function login(username: string, password: string): boolean {
-  if (username === adminUser.username && password === adminUser.password) {
-    currentUser.set(adminUser);
-    isAuthenticated.set(true);
-    return true;
+export async function login(email: string, password: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${apiBaseUrl}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem(JWT_TOKEN_KEY, data.token); // Save the JWT token
+      localStorage.setItem(USER_DATA_KEY, JSON.stringify(data.user)); // Save user data
+      currentUser.set(data.user);
+      isAuthenticated.set(true);
+      return true;
+    } else {
+      isAuthenticated.set(false);
+      currentUser.set(null);
+      return false;
+    }
+  } catch (error) {
+    console.error('Login failed:', error);
+    isAuthenticated.set(false);
+    currentUser.set(null);
+    return false;
   }
-  isAuthenticated.set(false);
-  currentUser.set(null);
-  return false;
 }
 
 export function logout() {

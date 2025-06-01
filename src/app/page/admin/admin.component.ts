@@ -40,10 +40,12 @@ export class AdminComponent implements OnInit {
     this.loadAbsences();
   }
 
-  loadAbsences() {
-    this.absenceService.getAbsences().subscribe(absences => {
-      this.absences = absences;
-      this.classes = Array.from(new Set(absences.map(a => a.classe)));
+  loadAbsences(page: number = 0, size: number = 10) {
+    this.absenceService.getAbsences(page, size).subscribe(response => {
+      console.log('Données reçues de getAbsences:', response);
+      this.absences = response.content;
+      this.classes = Array.from(new Set(this.absences.map(a => a.classe)));
+      this.totalPages = response.totalPages;
       this.applyFilters();
     });
   }
