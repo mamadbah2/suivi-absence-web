@@ -22,9 +22,10 @@ export class AdminComponent implements OnInit {
   selectedClasse: string = '';
   selectedStatut: string = '';
   user_connect: any;
-
-  // Pagination
-  pageSize = 5;
+//pageable: {…}, totalPages: 1, totalElements: 5, last: true, first: true, size: 10, number: 0, sort: {…}, numberOfElements: 5, … }
+  
+// Pagination
+  pageSize = 2;
   currentPage = 1;
   totalPages = 1;
 
@@ -40,17 +41,18 @@ export class AdminComponent implements OnInit {
   constructor(private absenceService: AbsenceService) { }
 
   ngOnInit() {
-    this.loadAbsences();
+    this.load();
     this.user_connect = JSON.parse(localStorage.getItem('USER_CONMECT') || 'null');
     console.log('Utilisateur connecté:', this.user_connect);
   }
 
-  loadAbsences(page: number = 0, size: number = 10) {
+  load(page: number = 0, size: number = 10) {
     this.absenceService.getAbsences(page, size).subscribe(response => {
       console.log('Données reçues de getAbsences:', response);
       this.absences = response.content;
       this.classes = Array.from(new Set(this.absences.map(a => a.classe)));
-      this.totalPages = response.totalPages;
+      this.currentPage = response.number + 1; // Ajuste la page courante pour l'affichage
+      this.totalPages = response.totalPages || 1; // Assure que totalPages est au moins 1
       this.applyFilters();
     });
   }
@@ -99,7 +101,7 @@ export class AdminComponent implements OnInit {
     this.absenceService.validateJustification(absence).subscribe({
       next: () => {
         this.showNotification('success', `Justification validée pour ${absence.nom} ${absence.prenom}`);
-        this.loadAbsences(); // Recharge les absences après validation
+        this.load(); // Recharge les absences après validation
       },
       error: () => {
         this.showNotification('error', `Erreur lors de la validation de la justification pour ${absence.nom} ${absence.prenom}`);
