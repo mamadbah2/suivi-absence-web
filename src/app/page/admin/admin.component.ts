@@ -4,6 +4,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { login, logout, isAuthenticated, currentUser } from '../../shared/store/auth.store';
 
+interface Absence {
+  matricule: string;
+  nom: string;
+  prenom: string;
+  classe: string;
+  module: string;
+  date: string;
+  heure: string;
+  status: 'Absent(e)' | 'Retard' | 'Présent(e)';
+  action: string;
+}
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
