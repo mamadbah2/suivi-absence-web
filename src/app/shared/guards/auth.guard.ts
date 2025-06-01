@@ -8,7 +8,7 @@ export const AuthGuard: CanActivateFn = (route, state) => {
   if (isAuthenticated()) {
     return true;
   } else {
-    // Rediriger vers la page de login si non connecté
+    router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
     return router.createUrlTree(['/admin']);
   }
 };

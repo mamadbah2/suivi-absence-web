@@ -32,13 +32,13 @@ export class SecurityComponent {
     this.loginError = !success;
 
     if (success) {
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/admin']);
     }
   }
 
   onLogout() {
     logout();
-    this.router.navigate(['/admin']);
+    this.router.navigate(['/login']);
   }
 
   protected readonly currentUser = currentUser;
