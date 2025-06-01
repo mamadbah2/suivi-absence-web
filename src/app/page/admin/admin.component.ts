@@ -1,56 +1,120 @@
-import { Component } from '@angular/core';
-import {Router, RouterModule, RouterOutlet} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { AbsenceService } from '../../shared/services/impl/absence.service';
+import { AbsenceModels } from '../../shared/models/absence.models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { login, logout, isAuthenticated, currentUser } from '../../shared/store/auth.store';
 
-interface Absence {
-  matricule: string;
-  nom: string;
-  prenom: string;
-  classe: string;
-  module: string;
-  date: string;
-  heure: string;
-  status: 'Absent(e)' | 'Retard' | 'Présent(e)';
-  action: string;
-}
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css'],  // Ajout de cette ligne
+  styleUrl: './admin.component.css',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    RouterOutlet
-  ]
+  imports: [CommonModule, FormsModule],
 })
-export class AdminComponent {
-  username = '';
-  password = '';
-  loginError = false;
+export class AdminComponent implements OnInit {
+  absences: AbsenceModels[] = [];
+  filteredAbsences: AbsenceModels[] = [];
+  paginatedAbsences: AbsenceModels[] = [];
+  classes: string[] = [];
+  statuts: string[] = ['Présent', 'Absent', 'Justifié'];
+  selectedClasse: string = '';
+  selectedStatut: string = '';
 
-  constructor(private router: Router) {}
+  // Pagination
+  pageSize = 5;
+  currentPage = 1;
+  totalPages = 1;
 
-  get isLoggedIn() {
-    return isAuthenticated();
+  notification: { type: 'success' | 'error', message: string } | null = null;
+
+  // Ajout pour menu filtres
+  isFilterMenuOpen = false;
+
+  // Ajout pour modale détail
+  isDetailModalOpen = false;
+  selectedAbsence: AbsenceModels | null = null;
+
+  constructor(private absenceService: AbsenceService) { }
+
+  ngOnInit() {
+    this.loadAbsences();
   }
 
-  onLogin() {
-    const success = login(this.username, this.password);
-    this.loginError = !success;
+  loadAbsences() {
+    this.absenceService.getAbsences().subscribe(absences => {
+      this.absences = absences;
+      this.classes = Array.from(new Set(absences.map(a => a.classe)));
+      this.applyFilters();
+    });
+  }
 
-    if (success) {
-      this.router.navigate(['/admin/dashboard']);
+  applyFilters() {
+    this.filteredAbsences = this.absences.filter(a =>
+      (this.selectedClasse ? a.classe === this.selectedClasse : true) &&
+      (this.selectedStatut ? a.status === this.selectedStatut : true)
+    );
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredAbsences.length / this.pageSize) || 1;
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedAbsences = this.filteredAbsences.slice(start, end);
+  }
+
+  goToPreviousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
     }
   }
 
-  onLogout() {
-    logout();
-    this.router.navigate(['/admin']);
+  goToNextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
   }
 
-  protected readonly currentUser = currentUser;
+  onClasseChange() {
+    this.applyFilters();
+  }
+
+  onStatutChange() {
+    this.applyFilters();
+  }
+
+  validerJustification(absence: AbsenceModels) {
+    this.showNotification('success', `Justification validée pour ${absence.nom} ${absence.prenom}`);
+  }
+
+  refuserAbsence(absence: AbsenceModels) {
+    this.showNotification('error', `Absence refusée pour ${absence.nom} ${absence.prenom}`);
+  }
+
+  voirDetail(absence: AbsenceModels) {
+    this.selectedAbsence = absence;
+    this.isDetailModalOpen = true;
+    this.closeFilterMenu(); // ferme le menu si ouvert
+  }
+
+  closeDetailModal() {
+    this.isDetailModalOpen = false;
+    this.selectedAbsence = null;
+  }
+
+  showNotification(type: 'success' | 'error', message: string) {
+    this.notification = { type, message };
+    setTimeout(() => this.notification = null, 3000);
+  }
+
+  // Gestion ouverture/fermeture menu filtres
+  toggleFilterMenu() {
+    this.isFilterMenuOpen = !this.isFilterMenuOpen;
+  }
+  closeFilterMenu() {
+    this.isFilterMenuOpen = false;
+  }
 }
