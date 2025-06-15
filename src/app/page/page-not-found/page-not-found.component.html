@@ -1,1 +1,118 @@
-<p>page-not-found works!</p>
+<div class="ism-header-bar">
+  <header class="ism-header">
+    <div class="ism-header-left">
+      <span class="ism-header-title">Suivi des absences</span>
+    </div>
+    <div class="ism-header-right">
+      <div class="ism-admin-info">
+        <img class="ism-admin-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin avatar" />
+        <div class="ism-admin-text">
+          <span class="ism-admin-name">Prénom Nom</span>
+          <span class="ism-admin-role">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div class="ism-details-container">
+  <div *ngIf="loading" class="ism-loading">
+    <div class="ism-spinner"></div>
+    <p>Chargement des détails...</p>
+  </div>
+
+  <div *ngIf="error" class="ism-error">
+    <i class="ism-error-icon">⚠</i>
+    <p>Une erreur est survenue lors du chargement des détails.</p>
+  </div>
+
+  <div *ngIf="!loading && !error && absence" class="ism-details-content">
+    <div class="ism-details-grid">
+      <div class="ism-details-section">
+        <div class="ism-section-header">
+          <i class="ism-section-icon">👤</i>
+          <h2>Informations de l'étudiant</h2>
+        </div>
+        <div class="ism-details-items">
+          <div class="ism-details-item">
+            <span class="ism-details-label">Matricule</span>
+            <span class="ism-details-value">{{ absence.id }}</span>
+          </div>
+          <div class="ism-details-item">
+            <span class="ism-details-label">Nom</span>
+            <span class="ism-details-value">{{ absence.nom }}</span>
+          </div>
+          <div class="ism-details-item">
+            <span class="ism-details-label">Prénom</span>
+            <span class="ism-details-value">{{ absence.prenom }}</span>
+          </div>
+          <div class="ism-details-item">
+            <span class="ism-details-label">Classe</span>
+            <span class="ism-details-value">{{ absence.classe }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ism-details-section">
+        <div class="ism-section-header">
+          <i class="ism-section-icon">📅</i>
+          <h2>Informations de l'absence</h2>
+        </div>
+        <div class="ism-details-items">
+          <div class="ism-details-item">
+            <span class="ism-details-label">Module</span>
+            <span class="ism-details-value">{{ absence.module }}</span>
+          </div>
+          <div class="ism-details-item">
+            <span class="ism-details-label">Date</span>
+            <span class="ism-details-value">{{ absence.date | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="ism-details-item">
+            <span class="ism-details-label">Heure</span>
+            <span class="ism-details-value">{{ absence.heure }}</span>
+          </div>
+          <div class="ism-details-item">
+            <span class="ism-details-label">Statut</span>
+            <span class="ism-details-value" [ngClass]="'ism-status-' + absence.status.toLowerCase()">
+              {{ absence.status }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ism-details-section">
+      <div class="ism-section-header">
+        <i class="ism-section-icon">📝</i>
+        <h2>Justification</h2>
+      </div>
+      <div class="ism-justification">
+        <p>{{ absence.justification || 'Aucune justification fournie' }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="absence.justificatif" class="ism-details-section">
+      <div class="ism-section-header">
+        <i class="ism-section-icon">📎</i>
+        <h2>Justificatif</h2>
+      </div>
+      <div class="ism-justificatif">
+        <a [href]="absence.justificatif" target="_blank" class="ism-download-btn">
+          <i class="ism-download-icon">↓</i>
+          Télécharger le justificatif
+        </a>
+      </div>
+    </div>
+
+    <div class="ism-actions" *ngIf="absence.status === 'Absent'">
+      <button class="ism-action-btn" (click)="validerJustification()">
+        <i class="ism-action-icon">✓</i>
+        Valider la justification
+      </button>
+      <button class="ism-refuser-btn" (click)="refuserAbsence()">
+        <i class="ism-action-icon">✕</i>
+        Refuser l'absence
+      </button>
+    </div>
+  </div>
+</div>

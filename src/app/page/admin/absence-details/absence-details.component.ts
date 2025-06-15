@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AbsenceService } from '../../shared/services/impl/absence.service';
-import { AbsenceModels } from '../../shared/models/absence.models';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AbsenceService } from '../../../shared/services/impl/absence.service';
+import { AbsenceModels } from '../../../shared/models/absence.models';
 
 @Component({
-  selector: 'app-page-not-found',
-  templateUrl: './page-not-found.component.html',
-  styleUrl: './page-not-found.component.css',
+  selector: 'app-absence-details',
+  templateUrl: './absence-details.component.html',
+  styleUrl: './absence-details.component.css',
   standalone: true,
   imports: [CommonModule],
 })
-export class PageNotFoundComponent implements OnInit {
+export class AbsenceDetailsComponent implements OnInit {
   absence: AbsenceModels | null = null;
   loading = true;
   error = false;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
+    private router: Router,
     private absenceService: AbsenceService
   ) { }
 
@@ -71,7 +71,7 @@ export class PageNotFoundComponent implements OnInit {
     }
   }
 
-  retourAccueil() {
+  retour() {
     this.router.navigate(['/admin']);
   }
 }

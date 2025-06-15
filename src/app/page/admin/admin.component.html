@@ -1,8 +1,6 @@
 <div class="ism-header-bar">
   <header class="ism-header">
     <div class="ism-header-left">
-      <img class="ism-header-logo" src="https://upload.wikimedia.org/wikipedia/commons/2/24/LOGO-GROUPE-ISM-SENEGAL.jpg"
-        alt="Logo ISM" />
       <span class="ism-header-title">Suivi des absences</span>
     </div>
     <div class="ism-header-right">
@@ -18,10 +16,6 @@
 </div>
 
 <h1>Administration</h1>
-
-<div *ngIf="notification" class="ism-notification" [ngClass]="notification.type">
-  {{ notification.message }}
-</div>
 
 <div class="ism-admin-table-container">
   <div class="ism-filters-bar">
@@ -87,8 +81,6 @@
             (click)="validerJustification(absence)">Valider Just.</button>
           <button class="ism-refuser-btn" [disabled]="absence.status !== 'Absent'"
             (click)="refuserAbsence(absence)">Refuser</button>
-          <button class="ism-detail-btn" (click)="voirDetail(absence)" title="Voir détail"><span
-              class="ism-eye-icon">&#128065;</span></button>
         </td>
       </tr>
     </tbody>
@@ -97,27 +89,5 @@
     <button class="ism-page-btn" (click)="goToPreviousPage()" [disabled]="currentPage === 1">&#8592;</button>
     <span class="ism-page-info">Page {{ currentPage }} / {{ totalPages }}</span>
     <button class="ism-page-btn" (click)="goToNextPage()" [disabled]="currentPage === totalPages">&#8594;</button>
-  </div>
-</div>
-
-<!-- Modale de détail -->
-<div *ngIf="isDetailModalOpen && selectedAbsence" class="ism-modal-overlay" (click)="closeDetailModal()">
-  <div class="ism-modal" (click)="$event.stopPropagation()">
-    <button class="ism-modal-close" (click)="closeDetailModal()">&times;</button>
-    <h2>Détail de l'absence</h2>
-    <ul>
-      <li><b>Matricule :</b> {{ selectedAbsence.id }}</li>
-      <li><b>Nom :</b> {{ selectedAbsence.nom }}</li>
-      <li><b>Prénom :</b> {{ selectedAbsence.prenom }}</li>
-      <li><b>Classe :</b> {{ selectedAbsence.classe }}</li>
-      <li><b>Module :</b> {{ selectedAbsence.module }}</li>
-      <li><b>Date :</b> {{ selectedAbsence.date | date:'dd/MM/yyyy' }}</li>
-      <li><b>Heure :</b> {{ selectedAbsence.heure }}</li>
-      <li><b>Statut :</b> {{ selectedAbsence.status }}</li>
-      <li><b>Justification :</b> {{ selectedAbsence.justification || '-' }}</li>
-      <li><b>Justificatif :</b> <a *ngIf="selectedAbsence.justificatif" [href]="selectedAbsence.justificatif"
-          target="_blank">Voir le justificatif</a><span *ngIf="!selectedAbsence.justificatif">-</span></li>
-    </ul>
-    <button class="ism-modal-btn" (click)="closeDetailModal()">Fermer</button>
   </div>
 </div>

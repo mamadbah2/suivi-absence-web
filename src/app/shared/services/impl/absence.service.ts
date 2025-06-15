@@ -42,4 +42,24 @@ export class AbsenceService {
     // Simule un succès immédiat
     return of({ success: true });
   }
+
+  getAbsenceById(id: string): Observable<AbsenceModels | null> {
+    return new Observable(observer => {
+      this.getAbsences().subscribe(absences => {
+        const found = absences.find(a => a.id === id) || null;
+        observer.next(found);
+        observer.complete();
+      });
+    });
+  }
+
+  validerJustification(id: string): Observable<any> {
+    // Simule un succès immédiat
+    return of({ success: true });
+  }
+
+  refuserAbsence(id: string): Observable<any> {
+    // Simule un succès immédiat
+    return of({ success: true });
+  }
 }

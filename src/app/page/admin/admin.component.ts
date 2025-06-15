@@ -3,6 +3,7 @@ import { AbsenceService } from '../../shared/services/impl/absence.service';
 import { AbsenceModels } from '../../shared/models/absence.models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -25,16 +26,13 @@ export class AdminComponent implements OnInit {
   currentPage = 1;
   totalPages = 1;
 
-  notification: { type: 'success' | 'error', message: string } | null = null;
-
   // Ajout pour menu filtres
   isFilterMenuOpen = false;
 
-  // Ajout pour modale détail
-  isDetailModalOpen = false;
-  selectedAbsence: AbsenceModels | null = null;
-
-  constructor(private absenceService: AbsenceService) { }
+  constructor(
+    private absenceService: AbsenceService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.loadAbsences();
@@ -87,27 +85,11 @@ export class AdminComponent implements OnInit {
   }
 
   validerJustification(absence: AbsenceModels) {
-    this.showNotification('success', `Justification validée pour ${absence.nom} ${absence.prenom}`);
+    this.router.navigate(['/admin/absence', absence.id]);
   }
 
   refuserAbsence(absence: AbsenceModels) {
-    this.showNotification('error', `Absence refusée pour ${absence.nom} ${absence.prenom}`);
-  }
-
-  voirDetail(absence: AbsenceModels) {
-    this.selectedAbsence = absence;
-    this.isDetailModalOpen = true;
-    this.closeFilterMenu(); // ferme le menu si ouvert
-  }
-
-  closeDetailModal() {
-    this.isDetailModalOpen = false;
-    this.selectedAbsence = null;
-  }
-
-  showNotification(type: 'success' | 'error', message: string) {
-    this.notification = { type, message };
-    setTimeout(() => this.notification = null, 3000);
+    this.router.navigate(['/admin/absence', absence.id]);
   }
 
   // Gestion ouverture/fermeture menu filtres
