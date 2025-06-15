@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../shared/models/user.model';
 import { UserModel } from '../../models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -22,23 +23,18 @@ export class AdminComponent implements OnInit {
   selectedClasse: string = '';
   selectedStatut: string = '';
   user_connect: any;
-//pageable: {…}, totalPages: 1, totalElements: 5, last: true, first: true, size: 10, number: 0, sort: {…}, numberOfElements: 5, … }
   
-// Pagination
+  // Pagination
   pageSize = 2;
   currentPage = 1;
-  totalPages = 1;
+  totalPages = 5;
 
   notification: { type: 'success' | 'error', message: string } | null = null;
 
   // Ajout pour menu filtres
   isFilterMenuOpen = false;
 
-  // Ajout pour modale détail
-  isDetailModalOpen = false;
-  selectedAbsence: AbsenceModels | null = null;
-
-  constructor(private absenceService: AbsenceService) { }
+  constructor(private absenceService: AbsenceService, private router: Router) { }
 
   ngOnInit() {
     this.load();
@@ -51,13 +47,11 @@ export class AdminComponent implements OnInit {
       console.log('Données reçues de getAbsences:', response);
       this.absences = response.content;
       this.classes = Array.from(new Set(this.absences.map(a => a.classe)));
-      this.currentPage = response.number + 1; // Ajuste la page courante pour l'affichage
-      this.totalPages = response.totalPages || 1; // Assure que totalPages est au moins 1
+      this.currentPage = response.number + 1;
+      this.totalPages = response.totalPages || 1;
       this.applyFilters();
     });
   }
-
-
 
   applyFilters() {
     this.filteredAbsences = this.absences.filter(a =>
@@ -101,7 +95,7 @@ export class AdminComponent implements OnInit {
     this.absenceService.validateJustification(absence).subscribe({
       next: () => {
         this.showNotification('success', `Justification validée pour ${absence.nom} ${absence.prenom}`);
-        this.load(); // Recharge les absences après validation
+        this.load();
       },
       error: () => {
         this.showNotification('error', `Erreur lors de la validation de la justification pour ${absence.nom} ${absence.prenom}`);
@@ -114,14 +108,8 @@ export class AdminComponent implements OnInit {
   }
 
   voirDetail(absence: AbsenceModels) {
-    this.selectedAbsence = absence;
-    this.isDetailModalOpen = true;
-    this.closeFilterMenu(); // ferme le menu si ouvert
-  }
-
-  closeDetailModal() {
-    this.isDetailModalOpen = false;
-    this.selectedAbsence = null;
+    console.log('Voir détail de l\'absence:', absence);
+    this.router.navigate(['/absence', absence.id]);
   }
 
   showNotification(type: 'success' | 'error', message: string) {
@@ -129,11 +117,13 @@ export class AdminComponent implements OnInit {
     setTimeout(() => this.notification = null, 3000);
   }
 
-  // Gestion ouverture/fermeture menu filtres
   toggleFilterMenu() {
     this.isFilterMenuOpen = !this.isFilterMenuOpen;
   }
+
   closeFilterMenu() {
     this.isFilterMenuOpen = false;
   }
 }
+
+

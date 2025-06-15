@@ -43,6 +43,17 @@ export class AbsenceService {
     const url = 'http://localhost:8081/app/absences/validate'; 
     return this.http.post<any>(url, absence, { headers });
   }
+
+  rejectJustification(absence: AbsenceModels): Observable<any> {
+    const token = localStorage.getItem('jwt_token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    const url = 'http://localhost:8081/app/absences/reject'; 
+    return this.http.post<any>(url, absence, { headers });
+  }
   envoyerJustification(formData: FormData): Observable<any> {
     // Simule un succès immédiat
     return of({ success: true });

@@ -227,16 +227,17 @@
 }
 
 .ism-detail-btn {
-  background: #fff;
-  color: #a86c1d;
+  background: #a86c1d;
+  color: #f7f7f7;
   border: 1.5px solid #a86c1d;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  border-radius: 5%;
+  /* width: 36px;
+  height: 36px; */
   font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0.5rem 1.1rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }

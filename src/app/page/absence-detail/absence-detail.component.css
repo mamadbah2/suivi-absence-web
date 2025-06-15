@@ -1,0 +1,260 @@
+.ism-detail-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.ism-detail-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.ism-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.ism-back-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.ism-detail-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.ism-detail-section {
+  margin-bottom: 2rem;
+  
+}
+.ism-justificatif-item {
+  margin-bottom: 1rem;
+}
+
+.ism-detail-section h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.ism-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.ism-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ism-detail-item label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.ism-detail-item span {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.ism-justification {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.ism-justification p {
+  margin: 0;
+  line-height: 1.5;
+  color: #333;
+}
+
+.ism-justificatif {
+  margin-top: 1rem;
+}
+
+.ism-download-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.ism-download-btn:hover {
+  background-color: #0056b3;
+}
+
+.ism-detail-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f0f0f0;
+}
+
+.ism-approve-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.ism-approve-btn:hover {
+  background-color: #218838;
+}
+
+.ism-reject-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.ism-reject-btn:hover {
+  background-color: #c82333;
+}
+
+.ism-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.ism-error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+  background-color: #f8d7da;
+  border-radius: 4px;
+}
+
+.ism-status-absent {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.ism-status-justified {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.ism-status-unjustified {
+  color: #ffc107;
+  font-weight: bold;
+} 
+
+.ism-header-bar {
+  background: linear-gradient(90deg, #4b2c13 60%, #a86c1d 100%);
+  padding: 0 0 0.5rem 0;
+  box-shadow: 0 2px 8px rgba(58, 36, 21, 0.10);
+}
+
+
+.ism-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  padding: 1.2rem 2.5rem 1.2rem 2.5rem;
+  border-bottom: 2px solid #a86c1d;
+  min-height: 80px;
+  margin-bottom: 2rem;
+}
+
+.ism-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.ism-header-title {
+  color: #fff;
+  font-size: 1.7rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-family: 'Georgia', serif;
+}
+
+.ism-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+
+.ism-header-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+  margin-right: 1.2rem;
+  box-shadow: 0 2px 8px rgba(168, 108, 29, 0.10);
+}
+
+.ism-admin-info {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: #fff;
+  border-radius: 30px;
+  padding: 0.3rem 1rem 0.3rem 0.3rem;
+  box-shadow: 0 2px 8px rgba(168, 108, 29, 0.10);
+}
+
+.ism-admin-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #a86c1d;
+}
+
+.ism-admin-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ism-admin-name {
+  color: #4b2c13;
+  font-weight: bold;
+  font-size: 1.08rem;
+}
+
+.ism-admin-role {
+  color: #a86c1d;
+  font-size: 0.95rem;
+}

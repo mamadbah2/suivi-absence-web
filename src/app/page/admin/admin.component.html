@@ -41,7 +41,7 @@
         </select>
       </label>
     </div>
-    <button class="ism-filter-btn" (click)="toggleFilterMenu()">Filtres</button>
+    <!-- <button class="ism-filter-btn" (click)="toggleFilterMenu()">Filtres</button> -->
     <div *ngIf="isFilterMenuOpen" class="ism-filter-menu" (mouseleave)="closeFilterMenu()">
       <ul>
         <li (click)="selectedClasse=''; selectedStatut=''; applyFilters(); closeFilterMenu()">Réinitialiser les filtres
@@ -63,7 +63,6 @@
         <th>Heure</th>
         <th>Statut</th>
         <th>Justification</th>
-        <th>Justificatif</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -78,17 +77,15 @@
         <td>{{ absence.heure }}</td>
         <td>{{ absence.status }}</td>
         <td>{{ absence.justification }}</td>
-        <td>
-          <a *ngIf="absence.justificatif" [href]="absence.justificatif" target="_blank">Voir</a>
-          <span *ngIf="!absence.justificatif">-</span>
-        </td>
+      
         <td class="ism-action-col">
-          <button class="ism-action-btn" [disabled]="absence.status !== 'ABSENT'"
+          <!-- <button class="ism-action-btn" [disabled]="absence.status !== 'ABSENT'"
             (click)="validerJustification(absence)">Valider Just.</button>
           <button class="ism-refuser-btn" [disabled]="absence.status !== 'ABSENT'"
-            (click)="refuserAbsence(absence)">Refuser</button>
-          <button class="ism-detail-btn" (click)="voirDetail(absence)" title="Voir détail"><span
-              class="ism-eye-icon">&#128065;</span></button>
+            (click)="refuserAbsence(absence)">Refuser</button> -->
+          <button class="ism-detail-btn" (click)="voirDetail(absence)" title="Voir détail">
+            <span class="">Voir detail</span>
+          </button>
         </td>
       </tr>
     </tbody>
@@ -97,27 +94,5 @@
     <button class="ism-page-btn" (click)="goToPreviousPage()" [disabled]="currentPage === 1">&#8592;</button>
     <span class="ism-page-info">Page {{ currentPage }} / {{ totalPages }}</span>
     <button class="ism-page-btn" (click)="goToNextPage()" [disabled]="currentPage === totalPages">&#8594;</button>
-  </div>
-</div>
-
-<!-- Modale de détail -->
-<div *ngIf="isDetailModalOpen && selectedAbsence" class="ism-modal-overlay" (click)="closeDetailModal()">
-  <div class="ism-modal" (click)="$event.stopPropagation()">
-    <button class="ism-modal-close" (click)="closeDetailModal()">&times;</button>
-    <h2>Détail de l'absence</h2>
-    <ul>
-      <li><b>Matricule :</b> {{ selectedAbsence.matricule }}</li>
-      <li><b>Nom :</b> {{ selectedAbsence.nom }}</li>
-      <li><b>Prénom :</b> {{ selectedAbsence.prenom }}</li>
-      <li><b>Classe :</b> {{ selectedAbsence.classe }}</li>
-      <li><b>Module :</b> {{ selectedAbsence.module }}</li>
-      <li><b>Date :</b> {{ selectedAbsence.date | date:'dd/MM/yyyy' }}</li>
-      <li><b>Heure :</b> {{ selectedAbsence.heure }}</li>
-      <li><b>Statut :</b> {{ selectedAbsence.status }}</li>
-      <li><b>Justification :</b> {{ selectedAbsence.justification || '-' }}</li>
-      <li><b>Justificatif :</b> <a *ngIf="selectedAbsence.justificatif" [href]="selectedAbsence.justificatif"
-          target="_blank">Voir le justificatif</a><span *ngIf="!selectedAbsence.justificatif">-</span></li>
-    </ul>
-    <button class="ism-modal-btn" (click)="closeDetailModal()">Fermer</button>
   </div>
 </div>

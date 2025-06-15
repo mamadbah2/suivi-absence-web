@@ -1,0 +1,109 @@
+<div class="ism-header-bar">
+  <header class="ism-header">
+    <div class="ism-header-left">
+      <img class="ism-header-logo" src="https://upload.wikimedia.org/wikipedia/commons/2/24/LOGO-GROUPE-ISM-SENEGAL.jpg"
+        alt="Logo ISM" />
+      <span class="ism-header-title">Suivi des absences</span>
+    </div>
+    <div class="ism-header-right">
+      <div class="ism-admin-info">
+        <img class="ism-admin-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin avatar" />
+        <div class="ism-admin-text">
+          <span class="ism-admin-name">{{user_connect.prenom}} {{user_connect.nom}}</span>
+          <span class="ism-admin-role">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div class="ism-detail-container">
+  <div class="ism-detail-header">
+    <button class="ism-back-btn" (click)="goBack()">
+      <span class="ism-back-icon">&#8592;</span> Retour
+    </button>
+    <h1>Détails de l'absence</h1>
+  </div>
+
+  <div *ngIf="loading" class="ism-loading">
+    Chargement en cours...
+  </div>
+
+  <div *ngIf="error" class="ism-error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && absence" class="ism-detail-content">
+    <div class="ism-detail-section">
+      <h2>Informations de l'étudiant</h2>
+      <div class="ism-detail-grid">
+        <div class="ism-detail-item">
+          <label>Matricule</label>
+          <span>{{ absence.matricule }}</span>
+        </div>
+        <div class="ism-detail-item">
+          <label>Nom</label>
+          <span>{{ absence.nom }}</span>
+        </div>
+        <div class="ism-detail-item">
+          <label>Prénom</label>
+          <span>{{ absence.prenom }}</span>
+        </div>
+        <div class="ism-detail-item">
+          <label>Classe</label>
+          <span>{{ absence.classe }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ism-detail-section">
+      <h2>Informations de l'absence</h2>
+      <div class="ism-detail-grid">
+        <div class="ism-detail-item">
+          <label>Module</label>
+          <span>{{ absence.module }}</span>
+        </div>
+        <div class="ism-detail-item">
+          <label>Date</label>
+          <span>{{ absence.date | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="ism-detail-item">
+          <label>Heure</label>
+          <span>{{ absence.heure }}</span>
+        </div>
+        <div class="ism-detail-item">
+          <label>Statut</label>
+          <span [ngClass]="'ism-status-' + absence.status.toLowerCase()">{{ absence.status }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ism-detail-section">
+      <h2>Justification</h2>
+      <div class="ism-justification">
+        <p>{{ absence.justification || 'Aucune justification fournie' }}</p>
+      </div>
+    </div>
+
+    <div class="ism-detail-section" *ngIf="absence.justificatifs && absence.justificatifs.length > 0">
+      <h2>Justificatifs</h2>
+      <div class="ism-justificatif">
+        <div *ngFor="let justificatif of absence.justificatifs; let i = index" class="ism-justificatif-item">
+          <button class="ism-download-btn" (click)="downloadJustificatif(i)">
+            <span class="ism-download-icon">&#128229;</span>
+            Télécharger le justificatif {{ i + 1 }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ism-detail-actions" *ngIf="absence.status === 'ABSENT'">
+      <button class="ism-approve-btn" (click)="approveAbsence()">
+        Valider la justification
+      </button>
+      <button class="ism-reject-btn" (click)="rejectAbsence()">
+        Refuser l'absence
+      </button>
+    </div>
+  </div>
+</div> 

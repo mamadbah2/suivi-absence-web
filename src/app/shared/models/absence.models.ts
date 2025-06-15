@@ -9,5 +9,5 @@ export interface AbsenceModels {
   heure:string;
   status:string;
   justification:string;
-  justificatif:string;
+  justificatifs: string[];
 }
