@@ -124,6 +124,25 @@ export class AdminComponent implements OnInit {
   closeFilterMenu() {
     this.isFilterMenuOpen = false;
   }
+  
+  reloadAbsences() {
+    this.showNotification('success', 'Rechargement des données...');
+    this.load();
+  }
+  
+  onLogout() {
+    // Appel au service de déconnexion
+    this.showNotification('success', 'Déconnexion en cours...');
+    
+    // Utiliser le localStorage pour effacer les données de session
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('USER_CONMECT');
+    
+    // Redirection vers la page de connexion après un court délai
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 1000);
+  }
 }
 
 

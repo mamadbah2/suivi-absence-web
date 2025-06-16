@@ -42,6 +42,28 @@ export class AbsenceDetailComponent implements OnInit {
       next: (response: any) => {
         const absences = response.content || [];
         this.absence = absences.find((a: AbsenceModels) => a.id === id) || null;
+        
+        // Assurer la compatibilité entre justificatifs et justificatifsUrls
+        if (this.absence) {
+          if (!this.absence.justificatifsUrls && this.absence.justificatifs) {
+            this.absence.justificatifsUrls = this.absence.justificatifs;
+          } else if (!this.absence.justificatifs && this.absence.justificatifsUrls) {
+            this.absence.justificatifs = this.absence.justificatifsUrls;
+          }
+          
+          // Log des URLs d'images récupérées
+          console.log('==== URLS des images de justificatifs ====');
+          if (this.absence.justificatifsUrls && this.absence.justificatifsUrls.length > 0) {
+            console.log(`${this.absence.justificatifsUrls.length} image(s) trouvée(s) pour l'absence ID: ${this.absence.id}`);
+            this.absence.justificatifsUrls.forEach((url, index) => {
+              console.log(`Image ${index + 1}: ${url}`);
+            });
+          } else {
+            console.log('Aucune image de justificatif disponible pour cette absence');
+          }
+          console.log('======================================');
+        }
+        
         this.loading = false;
         if (!this.absence) {
           this.error = 'Absence non trouvée';
@@ -90,12 +112,31 @@ export class AbsenceDetailComponent implements OnInit {
   }
 
   downloadJustificatif(index: number = 0): void {
-    if (this.absence?.justificatifs && this.absence.justificatifs.length > index) {
-      window.open(this.absence.justificatifs[index], '_blank');
+    if (this.absence?.justificatifsUrls && this.absence.justificatifsUrls.length > index) {
+      window.open(this.absence.justificatifsUrls[index], '_blank');
+    }
+  }
+
+  openImageInNewTab(index: number = 0): void {
+    if (this.absence?.justificatifsUrls && this.absence.justificatifsUrls.length > index) {
+      window.open(this.absence.justificatifsUrls[index], '_blank');
     }
   }
 
   goBack(): void {
     this.router.navigate(['/admin']);
   }
-} 
+  
+  onLogout(): void {
+    this.showNotification('success', 'Déconnexion en cours...');
+    
+    // Effacer les données de session
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('USER_CONMECT');
+    
+    // Rediriger vers la page de connexion
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 1000);
+  }
+}

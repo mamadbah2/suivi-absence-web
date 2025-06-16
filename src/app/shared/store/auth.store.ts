@@ -10,11 +10,28 @@ const adminUser: User = {
 };
 
  const JWT_TOKEN_KEY = 'jwt_token';
- const USER_DATA_KEY = 'user_data';
+ const USER_DATA_KEY = 'USER_CONMECT'; // Correspond à la clé utilisée dans le code
  const apiBaseUrl = 'http://localhost:8081/app';
 
-export const isAuthenticated = signal(false);
-export const currentUser = signal<User | null>(null);
+// Initialisation avec vérification du localStorage
+const storedToken = typeof localStorage !== 'undefined' ? localStorage.getItem(JWT_TOKEN_KEY) : null;
+const storedUser = typeof localStorage !== 'undefined' ? localStorage.getItem(USER_DATA_KEY) : null;
+export const isAuthenticated = signal(!!storedToken);
+export const currentUser = signal<User | null>(storedUser ? JSON.parse(storedUser) : null);
+
+// Fonction pour vérifier si une session est active
+export function checkSession(): void {
+  const token = localStorage.getItem(JWT_TOKEN_KEY);
+  const userData = localStorage.getItem(USER_DATA_KEY);
+  
+  if (token && userData) {
+    isAuthenticated.set(true);
+    currentUser.set(JSON.parse(userData));
+  } else {
+    isAuthenticated.set(false);
+    currentUser.set(null);
+  }
+}
 
 export async function login(email: string, password: string): Promise<boolean> {
   try {
@@ -39,7 +56,7 @@ export async function login(email: string, password: string): Promise<boolean> {
         email: data.email,
         role: data.role,
       };
-      localStorage.setItem('USER_CONMECT', JSON.stringify(user));
+      localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
       currentUser.set(data.user);
       isAuthenticated.set(true);
       return true;
@@ -57,6 +74,8 @@ export async function login(email: string, password: string): Promise<boolean> {
 }
 
 export function logout() {
+  localStorage.removeItem(JWT_TOKEN_KEY);
+  localStorage.removeItem(USER_DATA_KEY);
   currentUser.set(null);
   isAuthenticated.set(false);
 }

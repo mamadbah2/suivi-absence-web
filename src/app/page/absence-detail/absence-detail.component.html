@@ -13,6 +13,9 @@
           <span class="ism-admin-role">Admin</span>
         </div>
       </div>
+      <button class="ism-logout-btn" (click)="onLogout()" title="Déconnexion">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
     </div>
   </header>
 </div>
@@ -85,19 +88,31 @@
       </div>
     </div>
 
-    <div class="ism-detail-section" *ngIf="absence.justificatifs && absence.justificatifs.length > 0">
+    <!-- Section des justificatifs qui s'affiche toujours -->
+    <div class="ism-detail-section">
       <h2>Justificatifs</h2>
-      <div class="ism-justificatif">
-        <div *ngFor="let justificatif of absence.justificatifs; let i = index" class="ism-justificatif-item">
+      
+      <!-- Affichage conditionnel selon la présence ou non d'images -->
+      <div *ngIf="absence.justificatifsUrls && absence.justificatifsUrls.length > 0" class="ism-justificatif-gallery">
+        <div *ngFor="let justificatif of absence.justificatifsUrls; let i = index" class="ism-justificatif-item">
+          <div class="ism-justificatif-image-container">
+            <img [src]="justificatif" alt="Justificatif {{i+1}}" class="ism-justificatif-image" (click)="openImageInNewTab(i)">
+          </div>
           <button class="ism-download-btn" (click)="downloadJustificatif(i)">
             <span class="ism-download-icon">&#128229;</span>
             Télécharger le justificatif {{ i + 1 }}
           </button>
         </div>
       </div>
+      
+      <!-- Message affiché quand il n'y a pas d'images -->
+      <div *ngIf="!absence.justificatifsUrls || absence.justificatifsUrls.length === 0" class="ism-no-justificatifs">
+        <p>Aucune image de justificatif disponible</p>
+      </div>
     </div>
 
-    <div class="ism-detail-actions" *ngIf="absence.status === 'ABSENT'">
+    <!-- Boutons d'action (validation/refus) - corrigé pour fonctionner avec différentes casses -->
+    <div class="ism-detail-actions" *ngIf="absence.status === 'ABSENT' || absence.status === 'Absent' || absence.status === 'absent'">
       <button class="ism-approve-btn" (click)="approveAbsence()">
         Valider la justification
       </button>
@@ -106,4 +121,4 @@
       </button>
     </div>
   </div>
-</div> 
+</div>

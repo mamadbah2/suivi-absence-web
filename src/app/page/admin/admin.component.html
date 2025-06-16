@@ -13,6 +13,9 @@
           <span class="ism-admin-role">Admin</span>
         </div>
       </div>
+      <button class="ism-logout-btn" (click)="onLogout()" title="Déconnexion">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
     </div>
   </header>
 </div>
@@ -41,6 +44,9 @@
         </select>
       </label>
     </div>
+    <button class="ism-reload-btn" (click)="reloadAbsences()" title="Actualiser">
+      <span>&#x21bb;</span> Actualiser
+    </button>
     <!-- <button class="ism-filter-btn" (click)="toggleFilterMenu()">Filtres</button> -->
     <div *ngIf="isFilterMenuOpen" class="ism-filter-menu" (mouseleave)="closeFilterMenu()">
       <ul>

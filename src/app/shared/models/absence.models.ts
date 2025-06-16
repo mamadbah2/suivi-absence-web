@@ -9,5 +9,6 @@ export interface AbsenceModels {
   heure:string;
   status:string;
   justification:string;
-  justificatifs: string[];
+  justificatifs?: string[]; // Pour la rétrocompatibilité
+  justificatifsUrls: string[]; // Correspond au format de l'API
 }

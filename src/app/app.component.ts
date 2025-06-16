@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
+import { checkSession, isAuthenticated } from './shared/store/auth.store';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { filter } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'suivi-absence-web';
   isLoginPage = false;
   notification: { type: 'success' | 'error', message: string } | null = null;
@@ -18,6 +19,16 @@ export class AppComponent {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((event: any) => {
       this.isLoginPage = event.urlAfterRedirects === '/login';
     });
+  }
+
+  ngOnInit() {
+    // Vérifier si l'utilisateur a une session active au démarrage
+    checkSession();
+    
+    // Si l'utilisateur est authentifié et qu'il est sur la page login, rediriger vers admin
+    if (isAuthenticated() && this.router.url === '/login') {
+      this.router.navigate(['/admin']);
+    }
   }
 
   logout() {

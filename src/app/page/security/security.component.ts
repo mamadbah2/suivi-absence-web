@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { login, logout, isAuthenticated, currentUser } from '../../shared/store/auth.store';
+import { login, logout, isAuthenticated, currentUser, checkSession } from '../../shared/store/auth.store';
 
 
 @Component({
@@ -16,12 +16,21 @@ import { login, logout, isAuthenticated, currentUser } from '../../shared/store/
     RouterOutlet
   ]
 })
-export class SecurityComponent {
+export class SecurityComponent implements OnInit {
   username = '';
   password = '';
   loginError = false;
 
   constructor(private router: Router) {}
+
+  ngOnInit() {
+    // Vérifier si une session est déjà active
+    checkSession();
+    if (this.isLoggedIn) {
+      // Si l'utilisateur est déjà connecté, le rediriger vers la page admin
+      this.router.navigate(['/admin']);
+    }
+  }
 
   get isLoggedIn() {
     return isAuthenticated();
