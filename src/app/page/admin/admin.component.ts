@@ -3,8 +3,6 @@ import { AbsenceService } from '../../shared/services/impl/absence.service';
 import { AbsenceModels } from '../../shared/models/absence.models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { User } from '../../shared/models/user.model';
-import { UserModel } from '../../models/user.model';
 import { Router } from '@angular/router';
 
 @Component({

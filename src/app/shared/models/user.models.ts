@@ -4,6 +4,7 @@ export interface UserModels {
   prenom:string;
   email:string;
   role:string;
+  imageUrl?: string; // Optional field for user profile image
 }
 
 export interface LoginResponse {

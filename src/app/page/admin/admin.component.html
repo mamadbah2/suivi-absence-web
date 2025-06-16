@@ -7,7 +7,9 @@
     </div>
     <div class="ism-header-right">
       <div class="ism-admin-info">
-        <img class="ism-admin-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin avatar" />
+        <img class="ism-admin-avatar" 
+          [src]="user_connect.imageUrl || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
+          alt="Admin avatar" />
         <div class="ism-admin-text">
           <span class="ism-admin-name">{{user_connect.prenom}} {{user_connect.nom}}</span>
           <span class="ism-admin-role">Admin</span>

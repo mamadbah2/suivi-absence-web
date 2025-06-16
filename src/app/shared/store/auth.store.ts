@@ -55,7 +55,10 @@ export async function login(email: string, password: string): Promise<boolean> {
         prenom: data.prenom,
         email: data.email,
         role: data.role,
+        // Essaie plusieurs propriétés possibles pour l'image
+        imageUrl: data.imageUrl || data.image || data.photo || data.avatar || data.matricule ||'',
       };
+      console.log('User data stored:', user); // Log pour débogage
       localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
       currentUser.set(data.user);
       isAuthenticated.set(true);

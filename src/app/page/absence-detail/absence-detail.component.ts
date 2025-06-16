@@ -3,13 +3,14 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AbsenceService } from '../../shared/services/impl/absence.service';
 import { AbsenceModels } from '../../shared/models/absence.models';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-absence-detail',
   templateUrl: './absence-detail.component.html',
   styleUrls: ['./absence-detail.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, FormsModule]
 })
 export class AbsenceDetailComponent implements OnInit {
   absence: AbsenceModels | null = null;
@@ -17,6 +18,8 @@ export class AbsenceDetailComponent implements OnInit {
   error: string | null = null;
   user_connect: any;
   notification: { type: 'success' | 'error', message: string } | null = null;
+  showRejectDialog = false;
+  rejectComment = '';  // Pour stocker le commentaire de refus
 
   constructor(
     private route: ActivatedRoute,
@@ -125,6 +128,40 @@ export class AbsenceDetailComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/admin']);
+  }
+  
+  // Méthodes pour gérer le dialogue de rejet
+  openRejectDialog(): void {
+    this.showRejectDialog = true;
+    this.rejectComment = ''; // Réinitialiser le commentaire
+  }
+  
+  closeRejectDialog(): void {
+    this.showRejectDialog = false;
+  }
+  
+  confirmReject(): void {
+    if (this.absence) {
+      // Créer une copie de l'absence et mettre à jour la justification avec le commentaire
+      const absenceToUpdate = {...this.absence};
+      if (this.rejectComment) {
+        absenceToUpdate.justification = this.rejectComment;
+      }
+      
+      this.absenceService.rejectJustification(absenceToUpdate).subscribe({
+        next: () => {
+          this.showNotification('success', `Justification refusée pour ${this.absence?.nom} ${this.absence?.prenom}`);
+          this.closeRejectDialog();
+          this.goBack();
+        },
+        error: (error: any) => {
+          this.error = 'Erreur lors du refus de la justification';
+          this.showNotification('error', 'Erreur lors du refus de la justification');
+          console.error('Erreur:', error);
+          this.closeRejectDialog();
+        }
+      });
+    }
   }
   
   onLogout(): void {

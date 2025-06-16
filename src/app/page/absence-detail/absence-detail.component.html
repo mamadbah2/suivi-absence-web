@@ -7,7 +7,9 @@
     </div>
     <div class="ism-header-right">
       <div class="ism-admin-info">
-        <img class="ism-admin-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin avatar" />
+        <img class="ism-admin-avatar" 
+          [src]="user_connect.imageUrl || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
+          alt="Admin avatar" />
         <div class="ism-admin-text">
           <span class="ism-admin-name">{{user_connect.prenom}} {{user_connect.nom}}</span>
           <span class="ism-admin-role">Admin</span>
@@ -111,14 +113,35 @@
       </div>
     </div>
 
-    <!-- Boutons d'action (validation/refus) - corrigé pour fonctionner avec différentes casses -->
-    <div class="ism-detail-actions" *ngIf="absence.status === 'ABSENT' || absence.status === 'Absent' || absence.status === 'absent'">
+    <!-- Boutons d'action pour accepter ou rejeter une absence -->
+    <div class="ism-detail-actions" *ngIf="absence.status === 'ABSENT'">
       <button class="ism-approve-btn" (click)="approveAbsence()">
         Valider la justification
       </button>
-      <button class="ism-reject-btn" (click)="rejectAbsence()">
-        Refuser l'absence
+      <button class="ism-reject-btn" (click)="openRejectDialog()">
+        Refuser la justification
       </button>
     </div>
   </div>
+</div>
+
+<!-- Dialogue de confirmation pour le rejet d'une absence avec commentaire -->
+<div *ngIf="showRejectDialog" class="ism-modal-overlay">
+  <div class="ism-modal">
+    <h2>Refuser la justification</h2>
+    <p>Vous êtes sur le point de refuser la justification pour l'absence de {{ absence?.nom }} {{ absence?.prenom }}.</p>
+    <div class="ism-modal-form">
+      <label for="reject-comment">Motif du refus (optionnel)</label>
+      <textarea id="reject-comment" [(ngModel)]="rejectComment" placeholder="Précisez la raison du refus..." rows="4"></textarea>
+    </div>
+    <div class="ism-modal-actions">
+      <button class="ism-modal-cancel" (click)="closeRejectDialog()">Annuler</button>
+      <button class="ism-modal-confirm" (click)="confirmReject()">Confirmer le refus</button>
+    </div>
+  </div>
+</div>
+
+<!-- Notification -->
+<div *ngIf="notification" class="ism-notification" [ngClass]="notification.type">
+  {{ notification.message }}
 </div>
