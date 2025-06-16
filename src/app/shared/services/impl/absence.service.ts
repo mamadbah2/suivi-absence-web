@@ -7,8 +7,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AbsenceService {
-  private apiUrl = 'http://localhost:8081/app/absences/list'; // Replace with your actual API URL
-  private updateUrl = 'http://localhost:8081/app/absences/update/justification'; // Endpoint pour mise à jour des justifications
+  private apiUrl = 'https://suivi-absence-backend-2.onrender.com/app/absences/list'; // Remplacez par l'URL de votre API
+  private updateUrl = 'https://suivi-absence-backend-2.onrender.com/app/absences/update/justification'; // Endpoint pour mise à jour des justifications
 
   constructor(private http: HttpClient) { }
 

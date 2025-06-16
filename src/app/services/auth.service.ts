@@ -7,7 +7,7 @@ import { UserModel, LoginRequest, LoginResponse } from '../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:8081';
+  private readonly API_URL = 'https://suivi-absence-backend-2.onrender.com';
   private readonly JWT_TOKEN_KEY = 'jwt_token';
   private readonly USER_DATA_KEY = 'user_data';
   
@@ -72,4 +72,4 @@ export class AuthService {
       return null;
     }
   }
-} 
+}

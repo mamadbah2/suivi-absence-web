@@ -11,7 +11,7 @@ const adminUser: User = {
 
  const JWT_TOKEN_KEY = 'jwt_token';
  const USER_DATA_KEY = 'USER_CONMECT'; // Correspond à la clé utilisée dans le code
- const apiBaseUrl = 'http://localhost:8081/app';
+ const apiBaseUrl = 'https://suivi-absence-backend-2.onrender.com/app';
 
 // Initialisation avec vérification du localStorage
 const storedToken = typeof localStorage !== 'undefined' ? localStorage.getItem(JWT_TOKEN_KEY) : null;
